@@ -8,15 +8,16 @@
 </head>
 
 <body>
-    <div class="h-screen overflow-hidden flex-roxw">
+    <div class="h-screen flex-row">
         <div class="navbar bg-base-100 h-20">
             <a class="normal-case text-xl" href="/">
                 <image class="h-14 aspect-square object-cover bg-black invert" src="/static/images/logo.png"/>
             </a>
             {% block rightNavbar %}{% endblock rightNavbar %}
         </div>
+        <div class="h-full">
         {% block mainContent %}{% endblock mainContent %}
-        
+        </div>
     </div>
 
 </body>
