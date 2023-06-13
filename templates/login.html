@@ -1,27 +1,27 @@
 {% extends 'base.html' %}
 {% block mainContent %}
 <div class="w-full h-full flex justify-center items-center">
-<div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-    <div class="card-body">
+  <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+    <form class="card-body" method="post">
       <div class="form-control">
         <label class="label">
           <span class="label-text">Email</span>
         </label>
-        <input type="text" placeholder="email" class="input input-bordered" />
+        <input type="text" name="email" placeholder="Email" class="input input-bordered" />
       </div>
       <div class="form-control">
         <label class="label">
           <span class="label-text">Password</span>
         </label>
-        <input type="text" placeholder="password" class="input input-bordered" />
+        <input type="password" name="password" placeholder="Password" class="input input-bordered" />
         <label class="label">
-          <a href="#" class="label-text-alt link link-hover">Forgot password?</a>
+          <a href="#" class="label-text-alt link link-hover">忘記密碼</a>
         </label>
       </div>
       <div class="form-control mt-6">
-        <button class="btn btn-primary">登入</button>
+        <input class="btn btn-primary" value="登入" type="submit">
       </div>
-    </div>
+    </form>
   </div>
 </div>
 {% endblock mainContent %}
