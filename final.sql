@@ -39,8 +39,6 @@ create table job
     foreign key ( company_id) references company( company_id)
 ) ENGINE=INNODB;
 
-
-
 create table events
 (
     event_id        varchar(20) primary key,
@@ -62,12 +60,10 @@ create table admin
 
 )ENGINE=INNODB;
 
-create table hire
+create table employs
 (
     applicant_id    varchar(20) primary key,
-    company_id      varchar(20),
-    foreign key (applicant_id) references applicant(applicant_id),
-    foreign key (company_id) references company(company_id)
+    company_id      varchar(20) 
 )ENGINE=INNODB;
 
 create table apply
@@ -85,9 +81,7 @@ create table apply
 create table participate
 (
     event_id    varchar(20) primary key,
-    applicant_id   varchar(20),
-    foreign key (applicant_id) references applicant(applicant_id),
-    foreign key (event_id) references events(event_id)
+    applicant_id   varchar(20)
 )ENGINE=INNODB;
 
 create table submit
