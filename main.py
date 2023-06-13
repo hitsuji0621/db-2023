@@ -1,10 +1,10 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import MetaData
 import db_config
-
+from datetime import date
 
 app = Flask(__name__)
 
@@ -37,20 +37,27 @@ with app.app_context():
     db_session = Session(db.engine, future=True)
 
 @app.route("/")
-def hello():
+def home():
     return render_template("hero.html")
 
-def db_add_user(req: dict):
-    req.form['birthday']
-    req.form['name']
-    req.form['phone']
-    req.form['gender']
+def db_add_user(form: dict):
+    birthday=form['birthday'] if form['birthday']!='' else str(date.today())
+    name=form['name']
+    phone=form['phone']
+    gender=form['gender']
+    email=form['email']
+    pwd=form['password']
+    db.session.add(db_table['applicant'](
+        applicant_id=name, email=email, password=pwd, zh_name=name, phone=phone, gender=gender, birthday=birthday))
+    db.session.commit()
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     if request.method=='POST':
+        print(request.form)
         db_add_user(request.form)
-        return request.form
+
+        return redirect(url_for('home'))
     else:
         return render_template("register.html")
     
