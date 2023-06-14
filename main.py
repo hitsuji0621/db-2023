@@ -61,30 +61,9 @@ def save_resume_url(resume_url):
     db.session.add(db_table['resume'](
        resume_url = resume_url))
     db.session.commit()
-@app.route('/uploads', methods=['GET', 'POST'])
-def upload_file():
-    if request.method == 'POST':
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(file_path)
-            save_resume_url(file_path)
-            return redirect(url_for('uploaded_file', filename=filename))
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form action="" method=post enctype=multipart/form-data>
-      <p><input type=file name=file>
-         <input type=submit value=Upload>
-    </form>
-    '''
 
 
-from flask import send_from_directory
 
-@app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 def db_add_user(form: dict):
@@ -197,15 +176,19 @@ def company_register():
 @login_required
 def apply_page(job_id):
     if request.method == 'POST':
-        resume_url = request.form['resume_url']
-        db.session.add(db_table['resume'](resume_url=resume_url))
-        db.session.commit()
-
-        resume_id = db.session.query(db_table['resume']).filter_by(resume_url=resume_url).first().resume_id
-        print(resume_id)
-        db.session.add(db_table['apply'](
-            applicant_id=int(current_user.id), job_id=job_id, resume_id=resume_id, state="processing"))
-        db.session.commit()
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+            save_resume_url(file_path)
+            uploaded_file(filename)
+            print("上傳成功")
+        # resume_id = db.session.query(db_table['resume']).filter_by(resume_url=resume_url).first().resume_id
+        # print(resume_id)
+        # db.session.add(db_table['apply'](
+        #     applicant_id=int(current_user.id), job_id=job_id, resume_id=resume_id, state="processing"))
+        # db.session.commit()
         return redirect(url_for('front_page'))
     else:
         return render_template("apply_page.html")
@@ -219,5 +202,5 @@ def company_info(company_id):
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0", debug=True, port=8081)
 
