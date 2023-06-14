@@ -17,8 +17,7 @@ create table applicant
 create table resume
 (
     resume_id       int primary key AUTO_INCREMENT,
-    file_name       varchar(20),
-    file_path       varchar(20)
+    resume_url      varchar(200)
 )ENGINE=INNODB;
 
 create table company
@@ -72,7 +71,7 @@ create table apply
 (
     applicant_id    int  primary key AUTO_INCREMENT,
     job_id      int,
-    data        DATETIME,
+    date        DATETIME,
     resume_id   int,
     state       varchar(20),
     foreign key (applicant_id) references applicant(applicant_id),
