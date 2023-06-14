@@ -145,6 +145,16 @@ def login():
                     flash('Logged in successfully.')
                     print('Logged in successfully.')
                     return redirect(url_for('front_page'))
+        elif request.form['acc_type']=='com':
+            # TODO: add company login here
+            com_name = request.form['email']
+            password = request.form['password']
+            res = db.session.query(db_table['company']).filter(
+                db_table['company'].company_name == com_name and db_table['company'].password == password).all()
+            
+            if(res.count()==1):
+                # TODO: Authorize the user
+                return redirect(url_for('company_frontPage'))
 
         return render_template("login.html")
 
