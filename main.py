@@ -58,10 +58,9 @@ def db_add_user(form: dict):
         applicant_id=name, email=email, password=pwd, zh_name=name, phone=phone, gender=gender, birthday=birthday))
     db.session.commit()
 def db_get_user(applicant_id):
-    applicant = db_table['applicant']
-    user = applicant.query.get(applicant_id)
-
-    return user
+    applicant = db.session.query(db_table['applicant']).filter(db_table['applicant'].applicant_id == applicant_id)
+    print(applicant)
+    return applicant
 
 def db_delete_user(applicant_id):
     user = db_get_user(applicant_id)
@@ -122,7 +121,16 @@ def login():
 
     else:
         return render_template("login.html")
-
-
+@app.route("/user/<string:applicant_id>")
+def show_user(applicant_id):
+    applicants = db_get_user(applicant_id)
+    if applicants:
+        return render_template("applicant_info.html", applicants=applicants)
+    else:
+        return "用户不存在"
+@app.route("/delete/<string:applicant_id>", methods=["GET"])
+def delete_user(applicant_id):
+    result = db_delete_user(applicant_id)
+    return result
 if __name__ == '__main__':
     app.run(host="0.0.0.0",port=8081)
