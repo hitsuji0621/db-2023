@@ -36,7 +36,7 @@ create table job
     job_id              int primary key AUTO_INCREMENT,
     job_name            varchar(20),
     company_id          int,
-    requirement         varchar(20),
+    requirement         varchar(100),
     category            varchar(20),
     description         varchar(100),
     foreign key ( company_id) references company( company_id)
