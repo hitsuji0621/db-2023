@@ -57,7 +57,32 @@ def db_add_user(form: dict):
     db.session.add(db_table['applicant'](
         applicant_id=name, email=email, password=pwd, zh_name=name, phone=phone, gender=gender, birthday=birthday))
     db.session.commit()
+def db_get_user(applicant_id):
+    applicant = db_table['applicant']
+    user = applicant.query.get(applicant_id)
 
+    return user
+
+def db_delete_user(applicant_id):
+    user = db_get_user(applicant_id)
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        return "刪除成功"
+    else:
+        return "沒有資料"
+def db_update_user(applicant_id, form: dict):
+    applicant = db_table['applicant']
+    user = applicant.query.get(applicant_id)
+
+    if user:
+        user.birthday = form.get('birthday', user.birthday)
+        user.name = form.get('name', user.name)
+        user.phone = form.get('phone', user.phone)
+        user.gender = form.get('gender', user.gender)
+        user.email = form.get('email', user.email)
+        user.password = form.get('password', user.password)
+        db.session.commit()
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -100,4 +125,4 @@ def login():
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0",port=8081)
