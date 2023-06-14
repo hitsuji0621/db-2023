@@ -60,7 +60,7 @@ def db_add_user(form: dict):
     email = form['email']
     pwd = form['password']
     db.session.add(db_table['applicant'](
-         email=email, password=pwd, zh_name=name, phone=phone, gender=gender, birthday=birthday))
+        email=email, password=pwd, zh_name=name, phone=phone, gender=gender, birthday=birthday))
     db.session.commit()
 
 
@@ -75,6 +75,17 @@ def db_update_user(applicant_id, form: dict):
         user.email = form.get('email', user.email)
         user.password = form.get('password', user.password)
         db.session.commit()
+
+
+def db_add_company(form: dict):
+    company_name = form['company_name']
+    address = form['address']
+    phone = form['phone']
+    website = form['website']
+    category = form['category']
+    db.session.add(db_table['company'](
+        company_name=company_name, address=address, phone=phone, website=website, category=category))
+    db.session.commit()
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -131,6 +142,15 @@ def modify_data():
         return redirect(url_for('front_page'))
     else:
         return render_template("modify_data.html")
+
+
+@app.route("/company_register", methods=['GET', 'POST'])
+def company_register():
+    if request.method == 'POST':
+        db_add_company(request.form)
+        return redirect(url_for('home'))
+    else:
+        return render_template("company_register.html")
 
 
 app.run(host="0.0.0.0", debug=True)
