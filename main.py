@@ -213,11 +213,11 @@ def company_viewData():
 
 @app.route("/company_register", methods=['GET', 'POST'])
 def company_register():
-    if request.method == 'POST':
-        db_add_company(request.form)
-        return redirect(url_for('company_frontPage'))
-    else:
-        return render_template("company_register.html")
+        if request.method == 'POST':
+            db_add_company(request.form)
+            return redirect(url_for('hero.html'))
+        else:
+            return render_template("company_register.html")
 
 
 @app.route("/company_frontPage")
