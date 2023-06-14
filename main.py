@@ -194,8 +194,8 @@ def company_register():
 
 @app.route("/company_frontPage")
 def company_frontPage():
-    # TODO: filter with company id
-    jobs = db.session.query(db_table['job']).join(db_table['company']).all()
+    # TODO: change 1 to user.id
+    jobs = db.session.query(db_table['job']).join(db_table['company']).filter(db_table['company'].company_id == 1).all()
     return render_template("company_frontPage.html", jobs=jobs)
 
 
