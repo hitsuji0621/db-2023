@@ -28,7 +28,7 @@ db = SQLAlchemy(app)
 with app.app_context():
     Base = automap_base()
     Base.prepare(db.engine)
-    print(Base.classes.keys())
+    # print(Base.classes.keys())
     db_table = {
         'admin': Base.classes.admin,
         'applicant': Base.classes.applicant,
@@ -133,16 +133,18 @@ def user_loader(applicant_id):
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
-        for t in db.session.query(db_table['applicant']).all():
-            if email == t.email and password == t.password:
-                user = User()
-                user.id = t.applicant_id
-                login_user(user)
-                flash('Logged in successfully.')
-                print('Logged in successfully.')
-                return redirect(url_for('front_page'))
+        print(request.form)
+        if request.form['acc_type']=='ind':
+            email = request.form['email']
+            password = request.form['password']
+            for t in db.session.query(db_table['applicant']).all():
+                if email == t.email and password == t.password:
+                    user = User()
+                    user.id = t.applicant_id
+                    login_user(user)
+                    flash('Logged in successfully.')
+                    print('Logged in successfully.')
+                    return redirect(url_for('front_page'))
 
         return render_template("login.html")
 
