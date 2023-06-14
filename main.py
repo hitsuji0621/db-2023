@@ -6,7 +6,11 @@ from sqlalchemy import MetaData
 from flask_login import LoginManager, UserMixin, login_required, login_user, current_user, logout_user
 import db_config
 from datetime import date
-
+from werkzeug.utils import secure_filename
+from flask import send_from_directory
+import os
+UPLOAD_FOLDER = 'uploads'  # Relative path for the upload folder
+ALLOWED_EXTENSIONS = set(['pdf'])
 app = Flask(__name__)
 
 # init_db
@@ -16,6 +20,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = \
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = False
 app.config['SECRET_KEY'] = b'\xef\x01w8\xcd\xe5\xf3!\xc1\xc2\x81k\x12\n\xd7P'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB
 db = SQLAlchemy(app)
 
 with app.app_context():
@@ -47,7 +53,40 @@ login_manager.login_message = u'Access denied because you are not logged in or l
 def home():
     return render_template("hero.html")
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
+def save_resume_url(resume_url):
+    db.session.add(db_table['resume'](
+       resume_url = resume_url))
+    db.session.commit()
+@app.route('/uploads', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+            save_resume_url(file_path)
+            return redirect(url_for('uploaded_file', filename=filename))
+    return '''
+    <!doctype html>
+    <title>Upload new File</title>
+    <h1>Upload new File</h1>
+    <form action="" method=post enctype=multipart/form-data>
+      <p><input type=file name=file>
+         <input type=submit value=Upload>
+    </form>
+    '''
+
+
+from flask import send_from_directory
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 def db_add_user(form: dict):
     birthday = form['birthday'] if form['birthday'] != '' else str(date.today())
     name = form['name']
