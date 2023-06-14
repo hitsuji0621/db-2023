@@ -200,7 +200,7 @@ def view_data():
 def company_register():
         if request.method == 'POST':
             db_add_company(request.form)
-            return redirect(url_for('company_frontPage'))
+            return redirect(url_for('hero.html'))
         else:
             return render_template("company_register.html")
 
