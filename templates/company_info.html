@@ -27,29 +27,37 @@
 {% block mainContent %}
 <div class="w-full h-full flex justify-center items-center">
     <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-        <div class="row" style="margin-top: 20px;">
-            <ul class="job-ul">
-                {% for job in jobs %}
-                    <li>
-                        <div class="job-main">
-                            <div class="job-title">
-                                <a href="{{ url_for('apply_page', job_id=job.job_id) }}">{{ job.job_name }}</a>
-                            </div>
-                            <div class="job-content">
-                                <span>Description: </span>
-                                {{ job.description }}
-                            </div>
-                            <div class="job-detail">
-                                <span class="job-requirement">Requirement: {{ job.requirement }}</span>
-                                <br>
-                                <a href="{{ url_for('company_info', company_id=job.company.company_id) }}">{{ job.company.company_name }}</a>
-                            </div>
-                        </div>
-                    </li>
-                    <br>
-                {% endfor %}
-            </ul>
-        </div>
+        <label class="label">
+            <span class="label"><b>Company Name</b></span>
+        </label>
+        <span>
+            {{ company.company_name }}
+        </span>
+        <label class="label">
+            <span class="label-text"><b>Company address</b></span>
+        </label>
+        <span>
+            {{ company.address }}
+        </span>
+        <label class="label">
+            <span class="label-text"><b>Company phone</b></span>
+        </label>
+        <span>
+            {{ company.phone }}
+        </span>
+        <label class="label">
+            <span class="label-text"><b>Company website</b></span>
+        </label>
+        <span>
+            {{ company.website }}
+        </span>
+        <label class="label">
+            <span class="label-text"><b>Company category</b></span>
+        </label>
+        <span>
+            {{ company.category }}
+        </span>
+      </div>
     </div>
 </div>
 {% endblock %}
