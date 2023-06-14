@@ -1,8 +1,8 @@
 {% extends 'base_auth.html' %}
 
 {% block mainContent %}
-<div class="w-full h-full flex bg-base-200">
-    <div class="job-ul w-full flex flex-col justify-center items-center">
+<div class="w-full h-full flex justify-center items-center p-4 overflow-scroll">
+    <div class="w-1/2 h-full flex flex-col items-center bg-base-200 gap-2">
         {% for event in events %}
         <div class="event-main card w-96 h-auto bg-base-100 p-4">
             <div class="event-title text-2xl uppercase">
@@ -30,8 +30,10 @@
                 {% endfor %}
             </div>
         </div>
-        <br>
+        <div class="divider"></div>
         {% endfor %}
+
+        <div class="h-48"> &nbsp</div>
     </div>
 </div>
 {% endblock %}
