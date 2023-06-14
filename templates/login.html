@@ -2,7 +2,17 @@
 {% block mainContent %}
 <div class="w-full h-full flex justify-center items-center">
   <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-    <form class="card-body" method="post">
+    <form class="card-body" method="post" id="login_form">
+      <div>
+        <label class="label">
+          <span class="label-text">Account Type</span>
+        </label>
+        <select class="select w-full max-w-xs" name="acc_type" form="login_form">
+          <!-- <option disabled selected>Pick your favorite Simpson</option> -->
+          <option selected value="ind">Individual</option>
+          <option value="com">Company</option>
+        </select>
+      </div>
       <div class="form-control">
         <label class="label">
           <span class="label-text">Email</span>
