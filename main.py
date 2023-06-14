@@ -9,6 +9,7 @@ from datetime import date
 
 app = Flask(__name__)
 
+
 # init_db
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     f'mysql+pymysql://{db_config.username}:{db_config.password}@{db_config.hostname}:{db_config.port}/{db_config.db}'
@@ -17,6 +18,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = False
 app.config['SECRET_KEY']=b'\xef\x01w8\xcd\xe5\xf3!\xc1\xc2\x81k\x12\n\xd7P'
 db = SQLAlchemy(app)
+
 
 with app.app_context():
     Base = automap_base()
@@ -36,10 +38,12 @@ with app.app_context():
 
     db_session = Session(db.engine, future=True)
 
+
 login_manager=LoginManager()
 login_manager.init_app(app)
 login_manager.login_view='login'
 login_manager.login_message=u'Access denied because you are not logged in or logged in with an unprivileged account.'
+
 
 
 @app.route("/")
@@ -70,6 +74,7 @@ def register():
         return render_template("register.html")
 
 
+
 class User(UserMixin):
     pass
 
@@ -98,6 +103,17 @@ def login():
     else:
         return render_template("login.html")
 
+@app.route("/front_page")
+def front_page():
+    return render_template("front_page.html")
+
+@app.route("/modify_data")
+def modify_data():
+    return render_template("modify_data.html")
+
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0")
+
+    app.run(host="0.0.0.0",debug=True)
+
+
