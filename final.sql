@@ -27,7 +27,8 @@ create table company
     address             varchar(20),
     phone               varchar(20),
     website             varchar(20),
-    category            varchar(20)
+    category            varchar(20),
+    password            varchar(20)
 ) ENGINE=INNODB;
 
 create table job
