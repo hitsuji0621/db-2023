@@ -1,0 +1,54 @@
+{% extends 'base_nav.html' %}
+
+{% block mainContent %}
+<style>
+    .content {
+        text-indent: 20px;
+    }
+    .label {
+        text-indent: 10px;
+    }
+</style>
+</style>
+<div class="w-full h-full flex justify-center items-center">
+    <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+        <label class="label">
+            <span class="label"><b>My id</b></span>
+        </label>
+        <span class="content">
+            {{ data.applicant_id }}
+        </span>
+        <label class="label">
+            <span class="label-text"><b>Email</b></span>
+        </label>
+        <span class="content">
+            {{ data.email }}
+        </span>
+        <label class="label">
+            <span class="label-text"><b>Name</b></span>
+        </label>
+        <span class="content">
+            {{ data.zh_name }}
+        </span>
+        <label class="label">
+            <span class="label-text"><b>Phone</b></span>
+        </label>
+        <span class="content">
+            {{ data.phone }}
+        </span>
+        <label class="label">
+            <span class="label-text"><b>Gender</b></span>
+        </label>
+        <span class="content">
+            {{ data.gender }}
+        </span>
+         <label class="label">
+            <span class="label-text"><b>Birthday</b></span>
+        </label>
+        <span class="content">
+            {{ data.birthday }}
+        </span>
+      </div>
+    </div>
+</div>
+{% endblock %}

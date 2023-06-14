@@ -11,6 +11,7 @@ from flask import send_from_directory
 import os
 UPLOAD_FOLDER = 'uploads'  # Relative path for the upload folder
 ALLOWED_EXTENSIONS = set(['pdf'])
+
 app = Flask(__name__)
 
 # init_db
@@ -38,7 +39,8 @@ with app.app_context():
         'participate': Base.classes.participate,
         'submit': Base.classes.submit,
         'job': Base.classes.job,
-        'resume': Base.classes.resume
+        'resume': Base.classes.resume,
+        'sponse': Base.classes.sponse
     }
 
     db_session = Session(db.engine, future=True)
@@ -51,11 +53,16 @@ login_manager.login_message = u'Access denied because you are not logged in or l
 
 @app.route("/")
 def home():
-    return render_template("hero.html")
+    if current_user.is_authenticated:
+        return redirect(url_for('front_page'))
+    else:
+        return render_template("hero.html")
+
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
 
 def save_resume_url(resume_url):
     db.session.add(db_table['resume'](
@@ -63,9 +70,9 @@ def save_resume_url(resume_url):
     db.session.commit()
 
 
-
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
 def db_add_user(form: dict):
     birthday = form['birthday'] if form['birthday'] != '' else str(date.today())
     name = form['name']
@@ -89,7 +96,6 @@ def db_update_user(applicant_id, form: dict):
         user.email = form.get('email', user.email)
         user.password = form.get('password', user.password)
         db.session.commit()
-
 
 
 def db_add_company(form: dict):
@@ -148,28 +154,46 @@ def login():
 @app.route("/front_page")
 @login_required
 def front_page():
-    jobs = db.session.query(db_table['job']).join(db_table['company']).all()
-    return render_template("front_page.html", jobs=jobs)
+    if current_user.is_authenticated:
+        jobs = db.session.query(db_table['job']).join(db_table['company']).all()
+        return render_template("front_page.html", jobs=jobs)
+    else:
+        return login_manager.unauthorized()
 
 
 @app.route("/modify_data", methods=['GET', 'POST'])
+@login_required
 def modify_data():
-    if request.method == 'POST':
-        db_update_user(current_user.id, request.form)
-        return redirect(url_for('front_page'))
+    if current_user.is_authenticated:
+        if request.method == 'POST':
+            db_update_user(current_user.id, request.form)
+            return redirect(url_for('front_page'))
+        else:
+            return render_template("modify_data.html")
     else:
-        return render_template("modify_data.html")
+        return login_manager.unauthorized()
 
+
+@app.route("/view_data")
+@login_required
+def view_data():
+    if current_user.is_authenticated:
+        data = db.session.query(db_table['applicant']).filter_by(applicant_id=current_user.id).first()
+        return render_template("view_data.html", data=data)
+    else:
+        return login_manager.unauthorized()
 
 
 @app.route("/company_register", methods=['GET', 'POST'])
 def company_register():
-    if request.method == 'POST':
-        db_add_company(request.form)
-        return redirect(url_for('home'))
+    if current_user.is_authenticated:
+        if request.method == 'POST':
+            db_add_company(request.form)
+            return redirect(url_for('home'))
+        else:
+            return render_template("company_register.html")
     else:
-        return render_template("company_register.html")
-
+        return login_manager.unauthorized()
 
 
 @app.route("/apply_page/<int:job_id>", methods=['GET', 'POST'])
@@ -197,10 +221,29 @@ def apply_page(job_id):
 @app.route("/company_info/<int:company_id>")
 @login_required
 def company_info(company_id):
-    company = db.session.query(db_table['company']).filter_by(company_id=company_id).first()
-    return render_template("company_info.html", company=company)
+    if current_user.is_authenticated:
+        company = db.session.query(db_table['company']).filter_by(company_id=company_id).first()
+        return render_template("company_info.html", company=company)
+    else:
+        return login_manager.unauthorized()
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
+
+
+@app.route("/event_page")
+@login_required
+def event_page():
+    if current_user.is_authenticated:
+        events = db.session.query(db_table['events']).all()
+        sponsors = db.session.query(db_table['sponse']).join(db_table['company']).all()
+        return render_template("event_page.html", events=events, sponsors=sponsors)
+    else:
+        return login_manager.unauthorized()
 
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=True, port=8081)
-
+    app.run(host="0.0.0.0", debug=True)
