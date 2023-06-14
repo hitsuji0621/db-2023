@@ -1,4 +1,6 @@
 {% extends 'base_auth.html' %}
 
-
-<!--暫定，目前這個頁面要怎麼做還有待討論-->
+{% block mainContent %}
+  {% set isCompany=True %}
+  {% include 'components/jobs.html'  %}
+{% endblock mainContent %}

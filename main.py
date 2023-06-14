@@ -194,7 +194,9 @@ def company_register():
 
 @app.route("/company_frontPage")
 def company_frontPage():
-    return render_template("company_frontPage.html")
+    # TODO: filter with company id
+    jobs = db.session.query(db_table['job']).join(db_table['company']).all()
+    return render_template("company_frontPage.html", jobs=jobs)
 
 
 @app.route("/apply_page/<int:job_id>", methods=['GET', 'POST'])
