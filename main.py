@@ -7,12 +7,7 @@ from flask_login import LoginManager, UserMixin, login_required, login_user, cur
 import db_config
 from datetime import date
 
-# This is a sample Python script.
-
 app = Flask(__name__)
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
 
 # init_db
 app.config['SQLALCHEMY_DATABASE_URI'] = \
@@ -36,7 +31,8 @@ with app.app_context():
         'employs': Base.classes.employs,
         'participate': Base.classes.participate,
         'submit': Base.classes.submit,
-        'job': Base.classes.job
+        'job': Base.classes.job,
+        'resume': Base.classes.resume
     }
 
     db_session = Session(db.engine, future=True)
@@ -75,7 +71,6 @@ def db_update_user(applicant_id, form: dict):
         user.email = form.get('email', user.email)
         user.password = form.get('password', user.password)
         db.session.commit()
-
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -120,8 +115,10 @@ def login():
 
 
 @app.route("/front_page")
+@login_required
 def front_page():
-    return render_template("front_page.html")
+    jobs = db.session.query(db_table['job']).join(db_table['company']).all()
+    return render_template("front_page.html", jobs=jobs)
 
 
 @app.route("/modify_data", methods=['GET', 'POST'])
@@ -133,4 +130,30 @@ def modify_data():
         return render_template("modify_data.html")
 
 
-app.run(host="0.0.0.0", debug=True)
+@app.route("/apply_page/<int:job_id>", methods=['GET', 'POST'])
+@login_required
+def apply_page(job_id):
+    if request.method == 'POST':
+        resume_url = request.form['resume_url']
+        db.session.add(db_table['resume'](resume_url=resume_url))
+        db.session.commit()
+
+        resume_id = db.session.query(db_table['resume']).filter_by(resume_url=resume_url).first().resume_id
+        print(resume_id)
+        db.session.add(db_table['apply'](
+            applicant_id=int(current_user.id), job_id=job_id, resume_id=resume_id, state="processing"))
+        db.session.commit()
+        return redirect(url_for('front_page'))
+    else:
+        return render_template("apply_page.html")
+
+
+@app.route("/company_info/<int:company_id>")
+@login_required
+def company_info(company_id):
+    company = db.session.query(db_table['company']).filter_by(company_id=company_id).first()
+    return render_template("company_info.html", company=company)
+
+
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", debug=True)
