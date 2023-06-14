@@ -1,36 +1,45 @@
 {% extends 'base_auth.html' %}
 
 {% block mainContent %}
+<style>
+    .content {
+        text-indent: 20px;
+    }
+    .label-text {
+        text-indent: 10px;
+        font-size: large;
+    }
+</style>
 <div class="w-full h-full flex justify-center items-center">
-    <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+    <div class="card flex-shrink-0 flex w-96 shadow-2xl bg-base-100 p-4">
         <label class="label">
-            <span class="label"><b>Company Name</b></span>
+            <span class="label-text"><b>Company Name</b></span>
         </label>
-        <span>
+        <span class="content">
             {{ company.company_name }}
         </span>
         <label class="label">
             <span class="label-text"><b>Company address</b></span>
         </label>
-        <span>
+        <span class="content">
             {{ company.address }}
         </span>
         <label class="label">
             <span class="label-text"><b>Company phone</b></span>
         </label>
-        <span>
+        <span class="content">
             {{ company.phone }}
         </span>
         <label class="label">
             <span class="label-text"><b>Company website</b></span>
         </label>
-        <span>
+        <span class="content">
             {{ company.website }}
         </span>
         <label class="label">
             <span class="label-text"><b>Company category</b></span>
         </label>
-        <span>
+        <span class="content">
             {{ company.category }}
         </span>
       </div>

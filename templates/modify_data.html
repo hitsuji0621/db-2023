@@ -1,7 +1,7 @@
 {% extends 'base_auth.html' %}
 {% block mainContent %}
 <div class="w-full h-full flex justify-center items-center">
-    <form method="post"  class="card flex-shrink-0 w-full max-w-md shadow-2xl bg-base-100">
+    <form method="post"  class="card flex-shrink-0 w-96 shadow-2xl bg-base-100">
         <div class="card-body">
             <div class="form-control">
                 <label class="label">
@@ -37,7 +37,7 @@
                 <label class="label">
                     <span class="label-text">Birthday</span>
                 </label>
-                <input type="text" placeholder="birthday" name="birthday" id="birthday" class="input input-bordered" />
+                <input type="text" placeholder="yyyy/mm/dd" name="birthday" id="birthday" class="input input-bordered" />
             </div>
             <div class="form-control mt-6">
                 <input type="submit" class="btn btn-primary" value="修改">
