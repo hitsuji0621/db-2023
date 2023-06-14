@@ -63,17 +63,19 @@ create table admin
 
 create table employs
 (
-    applicant_id    int primary key,
-    company_id      int
+    applicant_id    int ,
+    company_id      int,
+    primary key(applicant_id,company_id)
 )ENGINE=INNODB;
 
 create table apply
 (
     applicant_id    int ,
-    job_id      int,
+    job_id      int ,
     date        DATETIME,
     resume_id   int,
     state       varchar(20),
+    primary key(applicant_id,job_id),
     foreign key (applicant_id) references applicant(applicant_id),
     foreign key (job_id) references job(job_id),
     foreign key (resume_id) references resume(resume_id)
@@ -82,11 +84,14 @@ create table apply
 create table participate
 (
     event_id    int,
-    applicant_id   int
+    applicant_id   int,
+    primary key(event_id,applicant_id)
 )ENGINE=INNODB;
 
 create table sponse
 (
     event_id  int,
-    company_id  int
+    company_id  int,
+    primary key(event_id,company_id)
 )ENGINE=INNODB;
+
