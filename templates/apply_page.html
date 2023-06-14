@@ -4,15 +4,11 @@
 <div class="w-full h-full flex justify-center items-center">
     <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
         <h2><b>申請該職缺</b></h2>
-        <span>請輸入你的履歷url</span>
-        <form class="card-body" method="post">
-            <div class="form-control">
-                <input type="text" name="resume_url" placeholder="resume_url" class="input input-bordered" />
-            </div>
-            <div class="form-control mt-6">
-                <input class="btn btn-primary" value="送出" type="submit">
-            </div>
+        <span>請上傳你的履歷url</span>
+        <form action="" method=post enctype=multipart/form-data>
+          <p><input type=file name=file>
+             <input type=submit value=Upload>
         </form>
-    </div>
+        </div>
 </div>
 {% endblock %}
