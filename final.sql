@@ -65,9 +65,7 @@ create table admin
 create table employs
 (
     applicant_id    int primary key AUTO_INCREMENT,
-    company_id      int,
-    foreign key (applicant_id) references applicant(applicant_id),
-    foreign key (company_id) references company(company_id)
+    company_id      int
 )ENGINE=INNODB;
 
 create table apply
@@ -85,23 +83,17 @@ create table apply
 create table participate
 (
     event_id    int  primary key AUTO_INCREMENT,
-    applicant_id   int,
-    foreign key (applicant_id) references applicant(applicant_id),
-    foreign key (event_id) references events(event_id)
+    applicant_id   int
 )ENGINE=INNODB;
 
 create table submit
 (
     job_id  int primary key AUTO_INCREMENT,
-    resume_id int,
-    foreign key (job_id) references job(job_id),
-    foreign key (resume_id) references resume(resume_id)
+    resume_id int
 )ENGINE=INNODB;
 
 create table sponse
 (
     event_id  int primary key AUTO_INCREMENT,
-    company_id  int,
-    foreign key (event_id) references events(event_id),
-    foreign key (company_id) references company(company_id)
+    company_id  int
 )ENGINE=INNODB;
