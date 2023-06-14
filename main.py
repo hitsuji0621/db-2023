@@ -179,8 +179,6 @@ def view_data():
     if current_user.is_authenticated:
         data = db.session.query(db_table['applicant']).filter_by(applicant_id=current_user.id).first()
         applications = db.session.query(db_table['apply']).filter_by(applicant_id=current_user.id).all()
-        for a in applications:
-            print(dir(a.job))
         return render_template("view_data.html", data=data, applications=applications)
     else:
         return login_manager.unauthorized()
@@ -244,8 +242,12 @@ def logout():
 def event_page():
     if current_user.is_authenticated:
         events = db.session.query(db_table['events']).all()
-        sponsors = db.session.query(db_table['sponse']).join(
-            db_table['company'], db_table['sponse'].company_id == db_table['company'].company_id).all()
+        sponsors = db.session.query(
+            db_table['sponse'], db_table['events'], db_table['company']).filter(
+            db_table['sponse'].company_id == db_table['company'].company_id).filter(
+            db_table['sponse'].event_id == db_table['events'].event_id).all()
+        for s in sponsors:
+            print(dir(s[0]))
         return render_template("event_page.html", events=events, sponsors=sponsors)
     else:
         return login_manager.unauthorized()

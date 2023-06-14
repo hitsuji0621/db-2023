@@ -23,9 +23,9 @@
                 <span class="event-category">End: {{ event.end_time }}</span>
 
                 {% for sponsor in sponsors %}
-                {% if sponsor.event_id == event.event_id %}
+                {% if sponsor[0].event_id == event.event_id %}
                 <br>
-                <span class="event-category">Sponsors: {{ sponsor.company_name }}</span>
+                <span class="event-category">Sponsors: {{ sponsor[2].company_name }} </span>
                 {% endif %}
                 {% endfor %}
             </div>
