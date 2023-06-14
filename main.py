@@ -7,7 +7,11 @@ from flask_login import LoginManager, UserMixin, login_required, login_user, cur
 import db_config
 from datetime import date
 
+# This is a sample Python script.
+
 app = Flask(__name__)
+# Press Shift+F10 to execute it or replace it with your code.
+# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
 
 # init_db
@@ -16,9 +20,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = \
 # app.config['SQLALCHEMY_POOL_RECYCLE'] = 600
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = False
-app.config['SECRET_KEY']=b'\xef\x01w8\xcd\xe5\xf3!\xc1\xc2\x81k\x12\n\xd7P'
+app.config['SECRET_KEY'] = b'\xef\x01w8\xcd\xe5\xf3!\xc1\xc2\x81k\x12\n\xd7P'
 db = SQLAlchemy(app)
-
 
 with app.app_context():
     Base = automap_base()
@@ -38,12 +41,10 @@ with app.app_context():
 
     db_session = Session(db.engine, future=True)
 
-
-login_manager=LoginManager()
+login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view='login'
-login_manager.login_message=u'Access denied because you are not logged in or logged in with an unprivileged account.'
-
+login_manager.login_view = 'login'
+login_manager.login_message = u'Access denied because you are not logged in or logged in with an unprivileged account.'
 
 
 @app.route("/")
@@ -59,8 +60,21 @@ def db_add_user(form: dict):
     email = form['email']
     pwd = form['password']
     db.session.add(db_table['applicant'](
-        applicant_id=name, email=email, password=pwd, zh_name=name, phone=phone, gender=gender, birthday=birthday))
+         email=email, password=pwd, zh_name=name, phone=phone, gender=gender, birthday=birthday))
     db.session.commit()
+
+
+def db_update_user(applicant_id, form: dict):
+    user = db.session.query(db_table['applicant']).get(applicant_id)
+
+    if user:
+        user.birthday = form.get('birthday', user.birthday)
+        user.zh_name = form.get('name', user.zh_name)
+        user.phone = form.get('phone', user.phone)
+        user.gender = form.get('gender', user.gender)
+        user.email = form.get('email', user.email)
+        user.password = form.get('password', user.password)
+        db.session.commit()
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -74,14 +88,15 @@ def register():
         return render_template("register.html")
 
 
-
 class User(UserMixin):
     pass
 
 
 @login_manager.user_loader
 def user_loader(applicant_id):
-    return User()
+    applicant = User()
+    applicant.id = applicant_id
+    return applicant
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -96,24 +111,26 @@ def login():
                 login_user(user)
                 flash('Logged in successfully.')
                 print('Logged in successfully.')
-                return redirect(url_for('home'))
+                return redirect(url_for('front_page'))
 
         return render_template("login.html")
 
     else:
         return render_template("login.html")
 
+
 @app.route("/front_page")
 def front_page():
     return render_template("front_page.html")
 
-@app.route("/modify_data")
+
+@app.route("/modify_data", methods=['GET', 'POST'])
 def modify_data():
-    return render_template("modify_data.html")
+    if request.method == 'POST':
+        db_update_user(current_user.id, request.form)
+        return redirect(url_for('front_page'))
+    else:
+        return render_template("modify_data.html")
 
 
-if __name__ == '__main__':
-
-    app.run(host="0.0.0.0",debug=True)
-
-
+app.run(host="0.0.0.0", debug=True)
