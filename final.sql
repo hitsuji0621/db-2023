@@ -69,7 +69,7 @@ create table employs
 
 create table apply
 (
-    applicant_id    int  primary key AUTO_INCREMENT,
+    applicant_id    int ,
     job_id      int,
     date        DATETIME,
     resume_id   int,
@@ -81,18 +81,12 @@ create table apply
 
 create table participate
 (
-    event_id    int  primary key ,
+    event_id    int,
     applicant_id   int
-)ENGINE=INNODB;
-
-create table submit
-(
-    job_id  int primary key,
-    resume_id int
 )ENGINE=INNODB;
 
 create table sponse
 (
-    event_id  int primary key,
+    event_id  int,
     company_id  int
 )ENGINE=INNODB;
