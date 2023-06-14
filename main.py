@@ -201,6 +201,16 @@ def view_data():
         return login_manager.unauthorized()
 
 
+@app.route("/company_viewData")
+@login_required
+def company_viewData():
+    if current_user.is_authenticated:
+        data = db.session.query(db_table['company']).filter_by(company_id=current_user.id).first()
+        return render_template("company_viewData.html", data=data)
+    else:
+        return login_manager.unauthorized()
+
+
 @app.route("/company_register", methods=['GET', 'POST'])
 def company_register():
     if request.method == 'POST':

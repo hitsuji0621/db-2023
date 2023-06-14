@@ -1,0 +1,55 @@
+{% extends 'base_comp.html' %}
+
+{% block mainContent %}
+<style>
+    .content {
+        text-indent: 20px;
+    }
+
+    .label-text {
+        text-indent: 10px;
+        font-size: large;
+    }
+</style>
+<div class="w-full h-full flex flex-col justify-content items-center pt-2 gap-2 overflow-auto scroll-auto">
+    <div class="card flex-shrink-0 w-96 shadow-2xl bg-base-100 p-4">
+        <label class="label">
+            <span class="label-text"><b>ID</b></span>
+        </label>
+        <span class="content">
+            {{ data.company_id }}
+        </span>
+        <label class="label">
+            <span class="label-text"><b>Name</b></span>
+        </label>
+        <span class="content">
+            {{ data.company_name }}
+        </span>
+        <label class="label">
+            <span class="label-text"><b>Address</b></span>
+        </label>
+        <span class="content">
+            {{ data.address }}
+        </span>
+        <label class="label">
+            <span class="label-text"><b>Phone</b></span>
+        </label>
+        <span class="content">
+            {{ data.phone }}
+        </span>
+        <label class="label">
+            <span class="label-text"><b>Website</b></span>
+        </label>
+        <span class="content">
+            {{ data.website }}
+        </span>
+        <label class="label">
+            <span class="label-text"><b>Category</b></span>
+        </label>
+        <span class="content">
+            {{ data.category }}
+        </span>
+    </div>
+    <div class="h-full w-full" style="min-height: 100%;">&nbsp;</div>
+</div>
+{% endblock %}
