@@ -63,7 +63,7 @@ create table admin
 
 create table employs
 (
-    applicant_id    int primary key AUTO_INCREMENT,
+    applicant_id    int primary key,
     company_id      int
 )ENGINE=INNODB;
 
@@ -81,18 +81,18 @@ create table apply
 
 create table participate
 (
-    event_id    int  primary key AUTO_INCREMENT,
+    event_id    int  primary key ,
     applicant_id   int
 )ENGINE=INNODB;
 
 create table submit
 (
-    job_id  int primary key AUTO_INCREMENT,
+    job_id  int primary key,
     resume_id int
 )ENGINE=INNODB;
 
 create table sponse
 (
-    event_id  int primary key AUTO_INCREMENT,
+    event_id  int primary key,
     company_id  int
 )ENGINE=INNODB;
