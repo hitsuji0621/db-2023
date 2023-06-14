@@ -2,26 +2,27 @@
 {% block mainContent %}
 <div class="hero h-full bg-base-200">
     <div class="hero-content flex-col lg:flex-row">
-        <img src="/static/images/job.jpg"
-            class="h-96 w-96 object-cover rounded-lg shadow-2xl" />
+        <img src="/static/images/job.jpg" class="h-96 w-96 object-cover rounded-lg shadow-2xl" />
         <div class="max-w-md">
             <h1 class="text-5xl font-bold">鐵人橋</h1>
             <p class="py-6 text-2xl">連結求職者與雇主，讓求職過程更高效、愉快。尋找理想職位，展現個人才華。</p>
-            <button class="btn btn-lg btn-primary">
-                <a href="{{ url_for('register') }}">
+            <a href="{{ url_for('register') }}">
+                <button class="btn btn-lg btn-primary">
                     求職者
-                </a>
-            </button>
-            <button class="btn btn-lg btn-primary">
-                <a href="{{ url_for('login') }}">
+                </button>
+            </a>
+            <a href="{{ url_for('login') }}">
+                <button class="btn btn-lg btn-primary">
                     我已經有帳號了
-                </a>
-            </button>
-            <button class="btn btn-lg btn-primary">
-                <a href="{{ url_for('company_register') }}">
+                </button>
+            </a>
+
+            <a href="{{ url_for('company_register') }}">
+                <button class="btn btn-lg btn-primary">
                     公司行號
-                </a>
-            </button>
+                </button>
+            </a>
+
         </div>
     </div>
 </div>

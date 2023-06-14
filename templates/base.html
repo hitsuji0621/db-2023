@@ -13,10 +13,12 @@
             <a class="normal-case text-xl" href="/">
                 <image class="h-14 aspect-square object-cover bg-black invert" src="/static/images/logo.png"/>
             </a>
-            {% block rightNavbar %}{% endblock rightNavbar %}
+            <div class="flex-none">
+                {% block rightNavbar %}{% endblock rightNavbar %}
+            </div>
         </div>
-        <div class="h-full">
-        {% block mainContent %}{% endblock mainContent %}
+        <div class="w-full h-full">
+            {% block mainContent %}{% endblock mainContent %}
         </div>
     </div>
 

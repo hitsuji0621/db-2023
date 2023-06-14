@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block rightNavbar %}
+<div class="flex px-4 gap-2">
+  <a class="navbar-brand mb-0 h1" href="/front_page">找工作</a>
+  <ul class="navbar-nav flex gap-2">
+    <li class="nav-item active">
+      <a class="navbar-brand mb-0 h2" href="/event_page">看活動<span class="sr-only">(current)</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/view_data">查看個人資料</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/modify_data">修改個人資料</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/logout">登出</a>
+    </li>
+  </ul>
+</div>
+{% endblock rightNavbar %}
