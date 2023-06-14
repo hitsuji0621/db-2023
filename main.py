@@ -186,14 +186,15 @@ def view_data():
 
 @app.route("/company_register", methods=['GET', 'POST'])
 def company_register():
-    if current_user.is_authenticated:
         if request.method == 'POST':
             db_add_company(request.form)
-            return redirect(url_for('home'))
+            return redirect(url_for('company_frontPage'))
         else:
             return render_template("company_register.html")
-    else:
-        return login_manager.unauthorized()
+
+@app.route("/company_frontPage")
+def company_frontPage():
+    return render_template("company_frontPage.html")
 
 
 @app.route("/apply_page/<int:job_id>", methods=['GET', 'POST'])
