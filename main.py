@@ -9,6 +9,7 @@ from datetime import date, datetime
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
 import os
+
 UPLOAD_FOLDER = 'uploads'  # Relative path for the upload folder
 ALLOWED_EXTENSIONS = set(['pdf'])
 
@@ -60,17 +61,18 @@ def home():
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+        filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
 def save_resume_url(resume_url):
     db.session.add(db_table['resume'](
-       resume_url = resume_url))
+        resume_url=resume_url))
     db.session.commit()
 
 
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
 
 def db_add_user(form: dict):
     birthday = form['birthday'] if form['birthday'] != '' else str(date.today())
@@ -124,17 +126,17 @@ class User(UserMixin):
 
 
 @login_manager.user_loader
-def user_loader(applicant_id):
-    applicant = User()
-    applicant.id = applicant_id
-    return applicant
+def user_loader(user_id):
+    user = User()
+    user.id = user_id
+    return user
 
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         print(request.form)
-        if request.form['acc_type']=='ind':
+        if request.form['acc_type'] == 'ind':
             email = request.form['email']
             password = request.form['password']
             for t in db.session.query(db_table['applicant']).all():
@@ -145,15 +147,18 @@ def login():
                     flash('Logged in successfully.')
                     print('Logged in successfully.')
                     return redirect(url_for('front_page'))
-        elif request.form['acc_type']=='com':
-            # TODO: add company login here
+        elif request.form['acc_type'] == 'com':
             com_name = request.form['email']
             password = request.form['password']
             res = db.session.query(db_table['company']).filter(
                 db_table['company'].company_name == com_name and db_table['company'].password == password).all()
-            
-            if(res.count()==1):
-                # TODO: Authorize the user
+
+            if len(res) == 1:
+                user = User()
+                user.id = res[0].__dict__['company_id']
+                login_user(user)
+                flash('Logged in successfully.')
+                print('Logged in successfully.')
                 return redirect(url_for('company_frontPage'))
 
         return render_template("login.html")
@@ -198,16 +203,17 @@ def view_data():
 
 @app.route("/company_register", methods=['GET', 'POST'])
 def company_register():
-        if request.method == 'POST':
-            db_add_company(request.form)
-            return redirect(url_for('company_frontPage'))
-        else:
-            return render_template("company_register.html")
+    if request.method == 'POST':
+        db_add_company(request.form)
+        return redirect(url_for('company_frontPage'))
+    else:
+        return render_template("company_register.html")
+
 
 @app.route("/company_frontPage")
 def company_frontPage():
     # TODO: change 1 to user.id
-    jobs = db.session.query(db_table['job']).join(db_table['company']).filter(db_table['company'].company_id == 1).all()
+    jobs = db.session.query(db_table['job']).join(db_table['company']).filter(db_table['company'].company_id == current_user.id).all()
     return render_template("company_frontPage.html", jobs=jobs)
 
 
