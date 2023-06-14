@@ -5,3 +5,6 @@ insert job values (2, 'SWE', 1, '20 years-old but have 30 years experience', 'IT
 insert job values (3, 'SWE', 2, '996', 'IT', 'Do any thing if Xi wants');
 insert events values (1, 'computers give away', 'intel.com', 'give away', 'free AMD computer', '2023-06-04 10:30:00', '2023-06-09 10:30:00');
 insert events values (2, 'The Great Leap', 'baidu.com', 'revolution', 'IDK', '1957-12-31 10:30:00', '1960-01-01 10:30:00');
+insert sponse values (1, 1);
+insert sponse values (1, 2);
+insert sponse values (2, 2);
