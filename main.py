@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import MetaData
 from flask_login import LoginManager, UserMixin, login_required, login_user, current_user, logout_user
 import db_config
-from datetime import date
+from datetime import date, datetime
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
 import os
@@ -37,7 +37,6 @@ with app.app_context():
         'events': Base.classes.events,
         'employs': Base.classes.employs,
         'participate': Base.classes.participate,
-        'submit': Base.classes.submit,
         'job': Base.classes.job,
         'resume': Base.classes.resume,
         'sponse': Base.classes.sponse
@@ -179,7 +178,10 @@ def modify_data():
 def view_data():
     if current_user.is_authenticated:
         data = db.session.query(db_table['applicant']).filter_by(applicant_id=current_user.id).first()
-        return render_template("view_data.html", data=data)
+        applications = db.session.query(db_table['apply']).filter_by(applicant_id=current_user.id).all()
+        for a in applications:
+            print(dir(a.job))
+        return render_template("view_data.html", data=data, applications=applications)
     else:
         return login_manager.unauthorized()
 
@@ -203,16 +205,19 @@ def apply_page(job_id):
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
+            user_folder = os.path.join(app.root_path, 'uploads', request.remote_addr)
+            os.makedirs(user_folder, exist_ok=True)
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(file_path)
             save_resume_url(file_path)
             uploaded_file(filename)
             print("上傳成功")
-        # resume_id = db.session.query(db_table['resume']).filter_by(resume_url=resume_url).first().resume_id
-        # print(resume_id)
-        # db.session.add(db_table['apply'](
-        #     applicant_id=int(current_user.id), job_id=job_id, resume_id=resume_id, state="processing"))
-        # db.session.commit()
+        resume_id = db.session.query(db_table['resume']).filter_by(resume_url=file_path).first().resume_id
+        print(resume_id)
+        db.session.add(db_table['apply'](
+            applicant_id=int(
+                current_user.id), job_id=job_id, resume_id=resume_id, state="processing", date=datetime.now()))
+        db.session.commit()
         return redirect(url_for('front_page'))
     else:
         return render_template("apply_page.html")
@@ -239,7 +244,8 @@ def logout():
 def event_page():
     if current_user.is_authenticated:
         events = db.session.query(db_table['events']).all()
-        sponsors = db.session.query(db_table['sponse']).join(db_table['company']).all()
+        sponsors = db.session.query(db_table['sponse']).join(
+            db_table['company'], db_table['sponse'].company_id == db_table['company'].company_id).all()
         return render_template("event_page.html", events=events, sponsors=sponsors)
     else:
         return login_manager.unauthorized()

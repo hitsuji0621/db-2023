@@ -51,4 +51,19 @@
       </div>
     </div>
 </div>
+    {% for application in applications %}
+        <br>
+        <label class="label">
+            <span class="label-text"><b>Job</b></span>
+        </label>
+        <span class="content">
+            {{ application.job.job_name }} in {{ application.job.company.company_name }}
+        </span>
+        <label class="label">
+            <span class="label-text"><b>State</b></span>
+        </label>
+        <span class="content">
+            {{ application.state }}
+        </span>
+    {% endfor %}
 {% endblock %}
