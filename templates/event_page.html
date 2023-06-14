@@ -1,42 +1,37 @@
 {% extends 'base_auth.html' %}
 
 {% block mainContent %}
-<div class="w-full h-full flex justify-center items-center">
-    <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-        <div class="row" style="margin-top: 20px;">
-            <ul class="job-ul">
-                {% for event in events %}
-                    <li>
-                        <div class="event-main">
-                            <div class="event-title">
-                                <a href="{{ url_for('event_page', event_id=event.event_id) }}">{{ event.event_name }}</a>
-                            </div>
-                            <div class="event-content">
-                                <span>Description: </span>
-                                {{ event.description }}
-                            </div>
-                            <div class="event-detail">
-                                <span class="event-website">Website: {{ event.website }}</span>
-                                <br>
-                                <span class="event-category">Category: {{ event.category }}</span>
-                                <br>
-                                <span class="event-category">Start: {{ event.start_time }}</span>
-                                <br>
-                                <span class="event-category">End: {{ event.end_time }}</span>
+<div class="w-full h-full flex bg-base-200">
+    <div class="job-ul w-full flex flex-col justify-center items-center">
+        {% for event in events %}
+        <div class="event-main card w-96 h-auto bg-base-100 p-4">
+            <div class="event-title text-2xl uppercase">
+                <a href="{{ url_for('event_page', event_id=event.event_id) }}">{{ event.event_name }}</a>
+            </div>
+            <div class="divider" ></div>
+            <div class="event-content">
+                <span>Description: </span>
+                {{ event.description }}
+            </div>
+            <div class="event-detail">
+                <span class="event-website">Website: {{ event.website }}</span>
+                <br>
+                <span class="event-category">Category: {{ event.category }}</span>
+                <br>
+                <span class="event-category">Start: {{ event.start_time }}</span>
+                <br>
+                <span class="event-category">End: {{ event.end_time }}</span>
 
-                                {% for sponsor in sponsors %}
-                                    {% if sponsor.event_id == event.event_id %}
-                                        <br>
-                                        <span class="event-category">Sponsors: {{ sponsor.company_name }}</span>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </li>
-                    <br>
+                {% for sponsor in sponsors %}
+                {% if sponsor.event_id == event.event_id %}
+                <br>
+                <span class="event-category">Sponsors: {{ sponsor.company_name }}</span>
+                {% endif %}
                 {% endfor %}
-            </ul>
+            </div>
         </div>
+        <br>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
