@@ -2,12 +2,12 @@
 
 {% block mainContent %}
 <div class="w-full h-full flex justify-center items-center">
-    <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-        <h2><b>申請該職缺</b></h2>
+    <div class="card w-96 h-72 shadow-2xl bg-base-100 p-4 gap-2">
+        <div class="text-3xl font-bold">申請該職缺</div>
         <span>請上傳你的履歷</span>
-        <form action="" method=post enctype=multipart/form-data>
-          <p><input type=file name=file>
-             <input type=submit value=Upload>
+        <form class="h-full flex-col justify-between" action="" method=post enctype=multipart/form-data>
+          <input class="file-input file-input file-input-bordered w-full" type=file name=file>
+          <input class="btn btn-primary btn-active w-full" type=submit value=Upload>
         </form>
         </div>
 </div>

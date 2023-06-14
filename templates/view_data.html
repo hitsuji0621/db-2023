@@ -5,14 +5,15 @@
     .content {
         text-indent: 20px;
     }
+
     .label-text {
         text-indent: 10px;
         font-size: large;
     }
 </style>
-<div class="w-full h-full flex justify-center items-center ">
+<div class="w-full h-full flex flex-col justify-content items-center pt-2 gap-2 overflow-auto scroll-auto">
     <div class="card flex-shrink-0 w-96 shadow-2xl bg-base-100 p-4">
-        <label class="label"></label>
+        <label class="label">
             <span class="label-text"><b>My id</b></span>
         </label>
         <span class="content">
@@ -42,17 +43,15 @@
         <span class="content">
             {{ data.gender }}
         </span>
-         <label class="label">
+        <label class="label">
             <span class="label-text"><b>Birthday</b></span>
         </label>
         <span class="content">
             {{ data.birthday }}
         </span>
-      </div>
     </div>
-</div>
     {% for application in applications %}
-        <br>
+    <div class="card w-96 h-auto bg-base-100 p-4 shadow-2xl">
         <label class="label">
             <span class="label-text"><b>Job</b></span>
         </label>
@@ -65,5 +64,8 @@
         <span class="content">
             {{ application.state }}
         </span>
+    </div>
     {% endfor %}
+    <div class="h-full w-full" style="min-height: 100%;">&nbsp;</div>
+</div>
 {% endblock %}
