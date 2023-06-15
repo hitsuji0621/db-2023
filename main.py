@@ -218,7 +218,7 @@ def company_viewData():
 def company_register():
         if request.method == 'POST':
             db_add_company(request.form)
-            return redirect(url_for('hero.html'))
+            return render_template('hero.html')
         else:
             return render_template("company_register.html")
 
@@ -385,4 +385,4 @@ def delete():
     return render_template("delete.html")
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", debug=True,port=8081)
+    app.run(host="0.0.0.0", debug=True,port=8086)
