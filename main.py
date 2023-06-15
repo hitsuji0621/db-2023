@@ -280,11 +280,28 @@ def event_page():
             db_table['sponse'], db_table['events'], db_table['company']).filter(
             db_table['sponse'].company_id == db_table['company'].company_id).filter(
             db_table['sponse'].event_id == db_table['events'].event_id).all()
-        for s in sponsors:
-            print(dir(s[0]))
+        # for s in sponsors:
+        #     print(dir(s[0]))
         return render_template("event_page.html", events=events, sponsors=sponsors)
     else:
         return login_manager.unauthorized()
+
+
+@app.route("/company_eventPage")
+@login_required
+def company_eventPage():
+    if current_user.is_authenticated:
+        events = db.session.query(db_table['events']).all()
+        sponsors = db.session.query(
+            db_table['sponse'], db_table['events'], db_table['company']).filter(
+            db_table['sponse'].company_id == db_table['company'].company_id).filter(
+            db_table['sponse'].event_id == db_table['events'].event_id).all()
+        # for s in sponsors:
+        #     print(dir(s[0]))
+        return render_template("company_eventPage.html", events=events, sponsors=sponsors)
+    else:
+        return login_manager.unauthorized()
+
 
 @app.route("/company_modify_data", methods=['GET', 'POST'])
 @login_required
@@ -319,7 +336,7 @@ def participate(event_id):
         db.session.commit()
         return redirect(url_for('event_page'))
     else:
-        return login_manager.unauthorized()       
+        return login_manager.unauthorized()
 
 
 if __name__ == '__main__':
