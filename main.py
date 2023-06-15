@@ -196,7 +196,10 @@ def view_data():
     if current_user.is_authenticated:
         data = db.session.query(db_table['applicant']).filter_by(applicant_id=current_user.id).first()
         applications = db.session.query(db_table['apply']).filter_by(applicant_id=current_user.id).all()
-        return render_template("view_data.html", data=data, applications=applications)
+        events = db.session.query(db_table['events']).join(
+            db_table['participate'], db_table['events'].event_id == db_table['participate'].event_id).filter_by(
+            applicant_id=current_user.id).all()
+        return render_template("view_data.html", data=data, applications=applications, events=events)
     else:
         return login_manager.unauthorized()
 
@@ -306,6 +309,18 @@ def db_update_company(company_id, form: dict):
         user.category = form.get('category', user.category)
         # user.password = form.get('password', user.password)
         db.session.commit()
+
+
+@app.route("/participate/<int:event_id>")
+@login_required
+def participate(event_id):
+    if current_user.is_authenticated:
+        db.session.add(db_table['participate'](event_id=event_id, applicant_id=current_user.id))
+        db.session.commit()
+        return redirect(url_for('event_page'))
+    else:
+        return login_manager.unauthorized()       
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)

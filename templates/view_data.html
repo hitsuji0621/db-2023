@@ -66,6 +66,16 @@
         </span>
     </div>
     {% endfor %}
+    {% for event in events %}
+        <div class="card w-96 h-auto bg-base-100 p-4 shadow-2xl">
+            <label class="label">
+                <span class="label-text"><b>Event</b></span>
+            </label>
+            <span class="content">
+                {{ event.event_name }}
+            </span>
+        </div>
+    {% endfor %}
     <div class="h-full w-full" style="min-height: 100%;">&nbsp;</div>
 </div>
 {% endblock %}

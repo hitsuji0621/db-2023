@@ -6,7 +6,7 @@
         {% for event in events %}
         <div class="event-main card w-96 h-auto bg-base-100 p-4">
             <div class="event-title text-2xl uppercase">
-                <a href="{{ url_for('event_page', event_id=event.event_id) }}">{{ event.event_name }}</a>
+                <a href="{{ url_for('participate', event_id=event.event_id) }}">{{ event.event_name }}</a>
             </div>
             <div class="divider" ></div>
             <div class="event-content">
