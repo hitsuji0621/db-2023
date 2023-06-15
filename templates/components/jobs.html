@@ -39,6 +39,7 @@
             {% if isCompany %}
             <br>
             {% for application in applications%}
+            {% if application.job.job_id == job.job_id %}
                 <div class="job-content">
                 <span>Applicant: </span>
                 {{ application.applicant.zh_name }}
