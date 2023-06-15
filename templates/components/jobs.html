@@ -36,8 +36,18 @@
                 <a class="link" href="{{ url_for('company_info', company_id=job.company.company_id) }}">{{
                     job.company.company_name }}</a>
             </div>
+            {% if isCompany %}
+            <br>
+            {% for application in applications%}
+                <div class="job-content">
+                <span>Applicant: </span>
+                {{ application.applicant.zh_name }}
+                </div>
+            {% endfor %}
+            {% endif %}
         </div>
         <div class="divider"></div>
+
         {% endfor %}
         <div class="h-full w-full" style="min-height: 100%;">&nbsp;</div>
     </div>

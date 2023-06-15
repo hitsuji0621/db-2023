@@ -227,7 +227,15 @@ def company_register():
 def company_frontPage():
     # TODO: change 1 to user.id
     jobs = db.session.query(db_table['job']).join(db_table['company']).filter(db_table['company'].company_id == current_user.id).all()
-    return render_template("company_frontPage.html", jobs=jobs)
+    applications = db.session.query(db_table['apply'], db_table['applicant'], db_table['job']).filter(
+        db_table['apply'].applicant_id == db_table['applicant'].applicant_id,
+        db_table['apply'].job_id == db_table['job'].job_id,
+        db_table['job'].company_id == current_user.id
+    ).all()
+
+    # for a in applications:
+    #     print(a.applicant.applicant_id)
+    return render_template("company_frontPage.html", jobs=jobs, applications=applications)
 
 
 @app.route("/apply_page/<int:job_id>", methods=['GET', 'POST'])
