@@ -1,0 +1,43 @@
+{% extends 'base_comp.html' %}
+
+{% block mainContent %}
+<div class="w-full h-full flex justify-center items-start pt-2">
+    <form method="post"  class="card flex-shrink-0 w-96 shadow-2xl bg-base-100">
+        <div class="card-body">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Company_name</span>
+                </label>
+                <input type="text" placeholder="company" name="company_name" id="company_name" class="input input-bordered" />
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Address</span>
+                </label>
+                <input type="label-text" placeholder="address" name="address" id="address" class="input input-bordered" />
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Phone</span>
+                </label>
+                <input type="text" placeholder="phone" name="phone" id="phone" class="input input-bordered" />
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Website</span>
+                </label>
+                <input type="text" placeholder="website" name="website" id="website" class="input input-bordered" />
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Category</span>
+                </label>
+                <input type="text" placeholder="category" name="category" id="category" class="input input-bordered" />
+            </div>
+            <div class="form-control mt-6">
+                <input type="submit" class="btn btn-primary" value="修改">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

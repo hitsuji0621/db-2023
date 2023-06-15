@@ -283,6 +283,29 @@ def event_page():
     else:
         return login_manager.unauthorized()
 
+@app.route("/company_modify_data", methods=['GET', 'POST'])
+@login_required
+def company_modify_data():
+    if current_user.is_authenticated:
+        if request.method == 'POST':
+            db_update_company(current_user.id, request.form)
+            return redirect(url_for('company_frontPage'))
+        else:
+            return render_template("company_modify_data.html")
+    else:
+        return login_manager.unauthorized()
+
+def db_update_company(company_id, form: dict):
+    user = db.session.query(db_table['company']).get(company_id)
+
+    if user:
+        user.company_name = form.get('company_name', user.company_name)
+        user.address = form.get('address', user.address)
+        user.phone = form.get('phone', user.phone)
+        user.website = form.get('website', user.website)
+        user.category = form.get('category', user.category)
+        # user.password = form.get('password', user.password)
+        db.session.commit()
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)
