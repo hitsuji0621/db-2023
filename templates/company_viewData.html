@@ -11,6 +11,10 @@
         font-size: large;
     }
 </style>
+<form action="{{ url_for('delete_job') }}" method="post">
+  <input type="text" name="job_id" placeholder="Enter job ID">
+  <button type="submit">Delete Job</button>
+</form>
 <div class="w-full h-full flex flex-col justify-content items-center pt-2 gap-2 overflow-auto scroll-auto">
     <div class="card flex-shrink-0 w-96 shadow-2xl bg-base-100 p-4">
         <label class="label">

@@ -361,6 +361,20 @@ def participate(event_id):
     else:
         return login_manager.unauthorized()
 
+@app.route("/delete_job", methods=['POST'])
+def delete_job():
+    job_id = request.form.get('job_id')
+    job = db.session.query(db_table['job']).get(job_id)
+    if job:
+        db.session.delete(job)
+        db.session.commit()
+        return redirect(url_for('company_frontPage'))
+    else:
+        return "failed"
+
+@app.route("/delete")
+def delete():
+    return render_template("delete.html")
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=True)

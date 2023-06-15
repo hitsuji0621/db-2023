@@ -1,0 +1,21 @@
+
+{% extends 'base_comp.html' %}
+
+{% block mainContent %}
+<style>
+    .content {
+        text-indent: 20px;
+    }
+
+    .label-text {
+        text-indent: 10px;
+        font-size: large;
+    }
+</style>
+
+<form action="{{ url_for('delete_job') }}" method="post">
+  <input type="text" name="job_id" placeholder="Enter job ID">
+  <button type="submit">Delete Job</button>
+</form>
+
+{% endblock %}
