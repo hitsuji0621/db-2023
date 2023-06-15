@@ -1,0 +1,43 @@
+{% extends 'base_comp.html' %}
+
+{% block mainContent %}
+<div class="w-full h-full flex justify-center items-start pt-2">
+    <form method="post"  class="card flex-shrink-0 w-full max-w-md shadow-2xl bg-base-100">
+        <div class="card-body">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Job_name</span>
+                </label>
+                <input type="text" placeholder="job_name" name="job_name" id="job_name" class="input input-bordered" />
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Company_id</span>
+                </label>
+                <input type="number" placeholder="company_id" name="company_id" id="company_id" class="input input-bordered" />
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Requirement</span>
+                </label>
+                <input type="text" placeholder="requirement" name="requirement" id="requirement" class="input input-bordered" />
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Category</span>
+                </label>
+                <input type="label-text" placeholder="Category" name="category" id="category" class="input input-bordered" />
+            </div>
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">Description</span>
+                </label>
+                <input type="text" placeholder="description" name="description" id="description" class="input input-bordered" />
+            </div>
+            <div class="form-control mt-6">
+                <input type="submit" class="btn btn-primary" value="新增職缺">
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

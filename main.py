@@ -328,6 +328,29 @@ def db_update_company(company_id, form: dict):
         db.session.commit()
 
 
+@app.route("/company_newopening", methods=['GET', 'POST'])
+@login_required
+def company_newopening():
+    if current_user.is_authenticated:
+        if request.method == 'POST':
+            db_add_opening(request.form)
+            return redirect(url_for('company_frontPage'))
+        else:
+            return render_template("company_newopening.html")
+    else:
+        return login_manager.unauthorized()
+
+def db_add_opening(form: dict):
+    job_name = form['job_name']
+    company_id = form['company_id']
+    requirement = form['requirement']
+    category = form['category']
+    description = form['description']
+    db.session.add(db_table['job'](
+        job_name=job_name, company_id=company_id, requirement=requirement, category=category, description=description))
+    db.session.commit()
+
+
 @app.route("/participate/<int:event_id>")
 @login_required
 def participate(event_id):
